@@ -1,0 +1,299 @@
+{% extends './base.html' %}
+
+{% block title %} {% endblock %}
+
+{% block body %}
+<body>
+    <h1 class="text-center mt5 mb-5 text-primary">Grupo humano de la vivienda</h1>
+
+    <div class="container">
+        <div class="">
+            {% for d in data %}
+            <div class="row mb-4"> 
+                <div class="col">
+                <label>Código de vivienda: {{d.idusuario}}</label>
+                </div>
+                <div class="col">
+                <label>Localización: {{d.localizacion}}</label>
+                </div>
+            </div>
+            <div class="row mb-4"> 
+                <div class="col">
+                <label>Código de vivienda: {{d.fecha_entrevista}}</label>
+                </div>
+                <div class="col">
+                <label>Nómbre del promotor: {{d.nombre_promotor}}</label>
+                </div>
+            </div>
+            <div class="row mb-4"> 
+                <div class="col">
+                <label>direccion: {{d.direccion}}</label>
+                </div>
+                <div class="col">
+                <label>Teléfono fijo: {{d.telefono_fijo}}</label>   
+                </div>
+            </div>
+            <div class="row mb-4"> 
+                <div class="col">
+                <label>Teléfono celular: {{d.telefono_celular}}</label>
+                </div>
+                <div class="col">
+                <label>Distancia en minutos a la cabecera municipal más cercana: {{d.distancia}}</label>    
+                </div>
+            </div>
+            <td class="articulo"><button type="button" class="btn btn-primary" id=btn-add{{d.idusuario}} data-bs-toggle="modal" data-bs-target="#staticBackdrop{{d.idusuario}}">Agregar Familia</button></td>
+            
+            <div class="modal fade" id="staticBackdrop{{d.idusuario}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h3 class="text-muted">Nueva familia</h3>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                    <div class="container">
+                                        <form id="registro_familia" action="/familia_on" method="POST">
+                                            {{form.csrf_token}} <!--para proteger el formulario contra ataques CSRF.-->
+                                            {{form.hidden_tag()}} <!--renderiza campos ocultos adicionales relacionados con el CSRF.-->
+                                            <div class="row mb-8"> 
+                                                <div class="col">
+                                                    <label>Apellidos de la familia</label>
+                                                    {{form.apellidos_familia()}} 
+                                                </div>
+                                                <div class="col">
+                                                    <label>Tipo de familia</label>
+                                                    <select class="form-select" id="miLista" name="tipo_familia" onchange="mostrarSeleccion()">
+                                                        <option selected></option>
+                                                        {% for d in data %}
+                                                        <option value="{{d.idusuario}}">{{d.idusuario}}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                    <p id="opcionSeleccionada"></p>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-4">
+                                                <div class="col">
+                                                    <label>Ciclo vital de la familia</label>
+                                                    <select class="form-select" id="miLista" name="ciclo_vital" onchange="mostrarSeleccion()">
+                                                        <option selected></option>
+                                                        {% for d in data %}
+                                                        <option value="{{d.idusuario}}">{{d.idusuario}}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                    <p id="opcionSeleccionada"></p>
+                                                </div>  
+                                                <div class="col">
+                                                    <label>En disolución</label>
+                                                    <select class="form-select" id="miLista" name="disolucion" onchange="mostrarSeleccion()">
+                                                        <option selected></option>
+                                                        {% for d in data %}
+                                                        <option value="{{d.idusuario}}">{{d.idusuario}}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                    <p id="opcionSeleccionada"></p>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-4"> 
+                                                <div class="col">
+                                                    <label>En situación de</label>
+                                                    <select class="form-select" placeholder="seleccione" id="miLista" name="situacion" onchange="mostrarSeleccion()">
+                                                        <option selected></option>
+                                                        {% for d in data %}
+                                                        <option value="{{d.idusuario}}">{{d.idusuario}}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                                <div class="col">
+                                                    {% for d in data %}
+                                                    <input type="hidden" class="form-control" id="cod_vivienda" name="cod_vivienda" value="{{d.idusuario}}">
+                                                    {% endfor %}
+                                                </div>    
+                                            </div>    
+                                            <div class="row">
+                                                <div class="col-6 col-sm-4">
+                                                    <input type="button" class="btn btn-primary" value="Registrar familia" id="enviar">
+                                                </div>
+                                            </div>
+                                        </form>
+                                        <br>
+                                    </div>
+                                </div>
+                            </div>
+                </div>
+                <div class="modal fade" id="staticBackdrop{{d.idusuario}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h3 class="text-muted">Nueva familia</h3>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                    <div class="container">
+                                        <form id="registro_familia" action="/familia_on" method="POST">
+                                            {{form.csrf_token}} <!--para proteger el formulario contra ataques CSRF.-->
+                                            {{form.hidden_tag()}} <!--renderiza campos ocultos adicionales relacionados con el CSRF.-->
+                                            <div class="row mb-8"> 
+                                                <div class="col">
+                                                    <label>Apellidos de la familia</label>
+                                                    {{form.apellidos_familia()}} 
+                                                </div>
+                                                <div class="col">
+                                                    <label>Tipo de familia</label>
+                                                    <select class="form-select" id="miLista" name="tipo_familia" onchange="mostrarSeleccion()">
+                                                        <option selected></option>
+                                                        {% for d in data %}
+                                                        <option value="{{d.idusuario}}">{{d.idusuario}}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                    <p id="opcionSeleccionada"></p>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-4">
+                                                <div class="col">
+                                                    <label>Ciclo vital de la familia</label>
+                                                    <select class="form-select" id="miLista" name="ciclo_vital" onchange="mostrarSeleccion()">
+                                                        <option selected></option>
+                                                        {% for d in data %}
+                                                        <option value="{{d.idusuario}}">{{d.idusuario}}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                    <p id="opcionSeleccionada"></p>
+                                                </div>  
+                                                <div class="col">
+                                                    <label>En disolución</label>
+                                                    <select class="form-select" id="miLista" name="disolucion" onchange="mostrarSeleccion()">
+                                                        <option selected></option>
+                                                        {% for d in data %}
+                                                        <option value="{{d.idusuario}}">{{d.idusuario}}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                    <p id="opcionSeleccionada"></p>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-4"> 
+                                                <div class="col">
+                                                    <label>En situación de</label>
+                                                    <select class="form-select" placeholder="seleccione" id="miLista" name="situacion" onchange="mostrarSeleccion()">
+                                                        <option selected></option>
+                                                        {% for d in data %}
+                                                        <option value="{{d.idusuario}}">{{d.idusuario}}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                                <div class="col">
+                                                    {% for d in data %}
+                                                    <input type="hidden" class="form-control" id="cod_vivienda" name="cod_vivienda" value="{{d.idusuario}}">
+                                                    {% endfor %}
+                                                </div>    
+                                            </div>    
+                                            <div class="row">
+                                                <div class="col-6 col-sm-4">
+                                                    <input type="button" class="btn btn-primary" value="Registrar familia" id="enviar">
+                                                </div>
+                                            </div>
+                                        </form>
+                                        <br>
+                                    </div>
+                                </div>
+                            </div>
+                </div>
+            {% endfor %}
+        </div>
+        <br>
+        <div id="toggleArrow" class="arrow">&#9658;</div>
+        <div class="card" id="formulario">
+            <div class="card-body">
+              <div class="row">
+              </div>
+                <table class="table table-striped table-bordered" id="tbl_usuario"  cellspacing="0">
+                    <thead>
+                        <th scope="col"># de familia</th>
+                        <th scope="col">Apellidos</th>
+                        <th scope="col">Tipo de familia</th>
+                        <th scope="col">Ciclo vital</th>
+                        <th scope="col">Disolución</th>
+                        <th scope="col">situación</th>
+                        <th scope="col">Actualizar</th>
+                        <th scope="col">Personas</th>
+                    </thead>
+                    <tbody>
+                    {% for d2 in data2 %}
+                    <tr>
+                        <td class="articulo">{{d2.idfamilia}}</td>
+                        <td class="articulo">{{d2.apellidos_familia}}</td>
+                        <td class="articulo">{{d2.tipo_familia}}</td>
+                        <td class="articulo">{{d2.ciclo_vital}}</td>
+                        <td class="articulo">{{d2.disolucion}}</td>
+                        <td class="articulo">{{d2.situacion}}</td>
+                        <td class="articulo"><button type="button" class="btn btn-primary" id=btn-edit{{d2.idfamilia}} data-bs-toggle="modal" data-bs-target="#staticBackdrop{{d2.idfamilia}}">Edit</button></td>
+                        <td class="articulo"><button type="button" class="btn btn-primary" id=btn-edit{{d2.idfamilia}} data-bs-toggle="modal" data-bs-target="#staticBackdrop{{d2.idfamilia}}1">Agregar persona</button></td>
+                    </tr>
+                  {% endfor %}
+                    <!-- Modal -->
+                    {% for d2 in data2 %}
+                    <div class="modal fade" id="staticBackdrop{{d2.idfamilia}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h1 class="modal-title fs-5" id="staticBackdropLabel">{{d2.apellidos_familia}}</h1>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                              <form action="/edit/{{d2.idfamilia}}" method="post">
+                                <label>Username</label>
+                                <input type="text" class="form-control mb-3" name="nombre" value="{{d2.apellidos_familia}}">
+                                <label>Password</label>
+                                <input type="text" class="form-control mb-3" name="cedula" value="{{d2.tipo_familia}}">
+                                <label>correo</label>
+                                <input type="text" class="form-control mb-3" name="telefono" value="{{d2.ciclo_vital}}">
+                                <label>correo</label>
+                                 <input type="text" class="form-control mb-3" name="correo" value="{{d2.disolucion  }}">
+                            </div>
+                            <div class="modal-footer">
+                              <button type="submit" class="btn btn-primary">Guardar</button>
+                            </div>
+                        </form>                         
+                          </div>
+                        </div>
+                    </div>
+
+                    <div class="modal fade" id="staticBackdrop{{d2.idfamilia}}1" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h1 class="modal-title fs-5" id="staticBackdropLabel">{{d2.apellidos_familia}}</h1>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                              <form action="/personas_on/{{d2.idfamilia}}" method="post">
+                                <label>Número de familia</label>
+                                    {% for d in data2 %}
+                                    <input type="text" class="form-control" id="cod_vivienda" name="cod_vivienda" value="{{d.idfamilia}}" disabled>
+                                    {% endfor %}  
+                                <label>Tipo documento</label>
+                                <select class="form-select" placeholder="seleccione" id="miLista" name="tipo_doc" onchange="mostrarSeleccion()">
+                                    <option selected></option>
+                                    {% for d in data %}
+                                    <option value="{{d.familia}}">{{d.idfamilia}}</option>
+                                    {% endfor %}
+                                </select>
+                                <label>Número de documento</label>
+                                {{form.num_documento()}}
+                                <label>Nombres</label>
+                                {{form.nombres()}}
+                                <label>Apellidos</label>
+                                {{form.apellidos()}} 
+                            </div>
+                            <div class="modal-footer">
+                              <button type="submit" class="btn btn-primary">Guardar</button>
+                            </div>
+                        </form>                         
+                          </div>
+                        </div>
+                    </div>
+                      {% endfor %} 
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+{% endblock %}

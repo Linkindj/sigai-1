@@ -1,0 +1,133 @@
+{% extends './base.html' %}
+
+{% block title %} {% endblock %}
+
+{% block body %}
+<body>
+    <h1 class="text-center mt5 mb-5 text-primary">SIGAI</h1>
+
+    <div class="container">
+        <div class="card">
+            <div class="card-body">
+                <form id="actualizar" action="/actualizar_on" method="POST">
+                    {{form.csrf_token}} <!--para proteger el formulario contra ataques CSRF.-->
+                    {{form.hidden_tag()}} <!--renderiza campos ocultos adicionales relacionados con el CSRF.-->
+                    <h3 class="text-muted">Datos Personales</h3>
+                    <div class="row mb-4"> 
+                        <div class="col">
+                            <label>Primer Nombre</label>
+                            {{form.p_nombre()}} 
+                        </div>
+                        <div class="col">
+                            <label>Segundo Nombre</label>
+                          {{form.s_nombre()}}
+                        </div>
+                        <div class="col">
+                            <label>Primer Apellido</label>
+                           {{form.p_apellido()}}
+                        </div>  
+                        <div class="col">
+                            <label>Segundo Apellido</label>
+                            {{form.s_apellido()}}
+                        </div>
+                    </div>
+                    <div class="row mb-4"> 
+                        <div class="col">
+                            <label>Tipo de Documento</label>
+                            <select class="form-select" placeholder="seleccione" id="miLista" name="t_doc" onchange="mostrarSeleccion()">
+                                <option selected></option>
+                                {% for d in data %}
+                                <option value="{{d.idusuario}}">{{d.idusuario}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col">
+                            <label>Número de Identificación</label>
+                            {{form.cedula()}} 
+                        </div>
+                        <div class="col">
+                            <label>Fecha de Nacimiento</label>
+                            {{form.f_nac()}} 
+                        </div>
+                        <div class="col">
+                            <label>Edad</label>
+                            {{form.f_nac()}} 
+                        </div>
+                    </div>
+                    <div class="row md-2">
+                        <div class="col">
+                            <label>Sexo</label>
+                            <select class="form-select" id="miLista" name="sexo" onchange="mostrarSeleccion()">
+                                <option selected></option>
+                                {% for d in data %}
+                                <option value="{{d.idusuario}}">{{d.idusuario}}</option>
+                                {% endfor %}
+                            </select>
+                            <p id="opcionSeleccionada"></p>
+                        </div>
+                        <div class="col md-4">
+                            <label>Télefono</label>
+                            {{form.telefono()}} 
+                        </div>
+                        <div class="col md-4">
+                            <label>Correo</label>
+                            {{form.correo()}} 
+                        </div>
+                        <div class="col md-4">
+                        </div>
+                    </div>    
+                    <h3 class="text-muted">Datos de residencia</h3>
+                    <div class="row md-3"> 
+                        <div class="col-md-3 col-6 rojo">
+                            <label>País</label>
+                            <select class="form-select" placeholder="seleccione" id="miLista" name="ficha" onchange="mostrarSeleccion()">
+                                <option selected></option>
+                                {% for d in data %}
+                                <option value="{{d.idusuario}}">{{d.idusuario}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col">
+                            <label>Departamento</label>
+                            {{form.n_curso()}} 
+                        </div>
+                        <div class="col">
+                            <label>Municipio</label>
+                            {{form.n_asignatura()}} 
+                        </div>
+                        <div class="col">
+                            <label>Dirección</label>
+                            {{form.n_docente()}} 
+                        </div>
+                    </div>
+                    <h3 class="text-muted">Datos de acompañante</h3>
+                    <div class="row"> 
+                        <div class="col">
+                            <label>Tipo de Documento</label>
+                            <select class="form-select" placeholder="seleccione" id="miLista" name="t_doc" onchange="mostrarSeleccion()">
+                                <option selected></option>
+                                {% for d in data %}
+                                <option value="{{d.idusuario}}">{{d.idusuario}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col">
+                            <label>Documento</label>
+                            {{form.c_previa()}} 
+                        </div>
+                        <div class="col">
+                            <label>Nombre Completo</label>
+                            {{form.estado()}} 
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6 col-sm-4">
+                            <input type="button" class="btn btn-primary" value="Registrar Paciente" id="enviar">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+{% endblock %}

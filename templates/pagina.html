@@ -1,0 +1,15 @@
+{% extends './base.html' %}
+
+{% block title %} {% endblock %}
+
+{% block customCSS %}
+<link rel="stylesheet" href="{{url_for('static', filename='css/login.css')}}">
+{% endblock %}
+
+{% block body %}
+    <p>Hola {{ username }}</p>
+
+    <a href="/logout">Cerrar sesión</a>
+  <script src="/docs/5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+{% endblock %}
+

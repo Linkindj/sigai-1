@@ -1,0 +1,73 @@
+.hidden {
+    display: none;
+}
+body {
+    background: url('../img/Fondo.jpg') no-repeat center center fixed;
+    background-size: cover;
+   
+}
+.divider {
+border-left: 1px solid #000000;
+height: auto;
+}
+.center-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    opacity: 0.5;
+}
+#section-style{
+background-color: #432345;
+}
+.center-image1 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    margin-top: 30px;
+}
+.shadow-div {
+    box-shadow: 0 4px 8px rgba(0, 0.1, 0, 0.2);
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 0px;
+    background-color: #fff;
+    align-items: center;
+}
+.shadow-a {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.img-container img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+.btn-info.custom-color {
+    color: white; 
+}
+.bg-success.custom-color {
+    color:#fff;
+    align-items: center;
+    text-align: center;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+.text-style{
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+.text-white{
+    color:#fff;
+}
+.text-label{
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.icono-left{
+    margin:1%;
+}
+.text-gray{
+    color:cadetblue;
+    align-items: center;
+    text-align: center;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}

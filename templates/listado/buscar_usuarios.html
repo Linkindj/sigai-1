@@ -1,0 +1,40 @@
+{% for d in resultado %}  
+<tr>
+  <td class="articulo">{{d.idusuario}}</td>
+  <td class="articulo">{{d.p_nombre}} {{d.s_nombre}} {{d.p_apellido}} {{d.s_apellido}}</td>
+  <td class="articulo">{{d.documento}}</td>
+  <td class="articulo">{{d.ficha}} {{d.nom_ficha}}</td>
+  <td class="articulo bg-success custom-color ">{{d.estado}}</td>
+  <td class="articulo"><button type="button" class="btn btn-info btn-sm" id=btn-detalles{{d.idusuario}} data-bs-toggle="modal" data-bs-target="#staticBackdrop1{{d.idusuario}}">detalles</button></td>
+  <td class="articulo"><button type="button" class="btn btn-info btn-sm" id=btn-edit{{d.idusuario}} data-bs-toggle="modal" data-bs-target="#staticBackdrop{{d.idusuario}}">Editar</button></td>
+  <td class="articulo"><a class="btn btn-info btn-sm" href="{{url_for('delete', idusuario=d.idusuario)}}">Eliminar</a></td>
+</tr>
+{% endfor %}  
+                <!-- Modal -->
+{% for d in resultado %}
+                <div class="modal fade" id="staticBackdrop{{ d.idusuario }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h1 class="modal-title fs-5" id="staticBackdropLabel">{{d.nombre}}</h1>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="/edit/{{d.idusuario}}" method="post">
+                              <label>Username</label>
+                              <input type="text" class="form-control mb-3" name="nombre" value="{{d.p_nombre}}">
+                              <label>Password</label>
+                              <input type="text" class="form-control mb-3" name="cedula" value="{{d.documento}}">
+                              <label>correo</label>
+                              <input type="text" class="form-control mb-3" name="telefono" value="{{d.telefono}}">
+                              <label>correo</label>
+                              <input type="text" class="form-control mb-3" name="correo" value="{{d.correo}}">
+                           <button type="submit" class="btn btn-primary">Guardar</button>
+                            </form>
+                        <div class="modal-footer">
+
+                        </div>                   
+                      </div>
+                    </div>
+                  </div>
+{% endfor %}  

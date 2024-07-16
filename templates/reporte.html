@@ -1,0 +1,17 @@
+{% extends './base.html' %}
+
+{% block title %} {% endblock %}
+
+{% block body %}
+<body>
+    <h1 class="text-center mt5 mb-5 text-primary">SIGAI</h1>
+
+    <div class="container">
+        <div class="card">
+                <div class="col-6 col-sm-4">
+                    <td class="articulo"><a class="btn btn-danger btn-sm" href="{{url_for('generarInforme')}}">Descargar</a></td>
+                </div>
+        </div>
+    </div>
+</body>
+{% endblock %}
