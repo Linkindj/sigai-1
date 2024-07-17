@@ -1,4 +1,5 @@
 import io
+from dotenv import load_dotenv
 from flask import Flask, jsonify, render_template, request, send_file, send_from_directory, session, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf.csrf import CSRFProtect, CSRFError 
@@ -7,7 +8,8 @@ from wtforms import PasswordField, StringField, SubmitField, DateField, EmailFie
 from wtforms.validators import DataRequired, Email
 import openpyxl
 import os
-import database as db
+
+load_dotenv()
 
 template_dir = os.path.dirname(os.path.abspath(os.path.dirname(__file__)))
 template_dir = os.path.join(template_dir, 'src', 'templates')
