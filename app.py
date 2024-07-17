@@ -1,5 +1,6 @@
 import io
 from flask import Flask, jsonify, render_template, request, send_file, send_from_directory, session, redirect, url_for, flash
+from flask_sqlalchemy import SQLAlchemy
 from flask_wtf.csrf import CSRFProtect, CSRFError 
 from flask_wtf import FlaskForm
 from wtforms import PasswordField, StringField, SubmitField, DateField, EmailField, TextAreaField
@@ -14,6 +15,14 @@ template_dir = os.path.join(template_dir, 'src', 'templates')
 app = Flask (__name__, template_folder = template_dir)
 
 app.secret_key=os.urandom(24)
+
+app.config['SQLALCHEMY_DATABASE_URI'] = (
+    f"mysql+pymysql://{os.getenv('u8ibzlg4rsrl8tqc')}:{os.getenv('cL5h8aX7EJEsu6TpBhvs')}"
+    f"@{os.getenv('bvlts1sjujv3nvfvmtv6-mysql.services.clever-cloud.com')}:{os.getenv('3306')}/{os.getenv('bvlts1sjujv3nvfvmtv6')}"
+)
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+db = SQLAlchemy(app)
 
 #csrf = CSRFProtect(app)
 
@@ -558,4 +567,4 @@ def descargo():
     return render_template('cerrar_sesion.html')
 
 if __name__ == '__main__':
-    app.run(debug=True, port=4000)
+    app.run()
