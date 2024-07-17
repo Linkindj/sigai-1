@@ -19,8 +19,8 @@ app = Flask (__name__, template_folder = template_dir)
 app.secret_key=os.urandom(24)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = (
-    f"mysql+pymysql://{os.getenv('u8ibzlg4rsrl8tqc')}:{os.getenv('cL5h8aX7EJEsu6TpBhvs')}"
-    f"@{os.getenv('bvlts1sjujv3nvfvmtv6-mysql.services.clever-cloud.com')}:{os.getenv('3306')}/{os.getenv('bvlts1sjujv3nvfvmtv6')}"
+    f"mysql+pymysql://{os.getenv('MYSQL_USER')}:{os.getenv('MYSQL_PASSWORD')}"
+    f"@{os.getenv('MYSQL_HOST')}:{os.getenv('MYSQL_PORT')}/{os.getenv('MYSQL_DB')}"
 )
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
