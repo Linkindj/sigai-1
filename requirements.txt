@@ -43,3 +43,4 @@ WTForm
 WTForms
 zipp                  
 python-dotenv
+pymysql
