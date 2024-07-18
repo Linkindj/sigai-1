@@ -8,8 +8,7 @@ from wtforms import PasswordField, StringField, SubmitField, DateField, EmailFie
 from wtforms.validators import DataRequired, Email
 import openpyxl
 import os
-
-load_dotenv()
+import database as db
 
 template_dir = os.path.dirname(os.path.abspath(os.path.dirname(__file__)))
 template_dir = os.path.join(template_dir, 'src', 'templates')
@@ -17,14 +16,6 @@ template_dir = os.path.join(template_dir, 'src', 'templates')
 app = Flask (__name__, template_folder = template_dir)
 
 app.secret_key=os.urandom(24)
-
-app.config['SQLALCHEMY_DATABASE_URI'] = (
-    f"mysql+pymysql://{os.getenv('MYSQL_USER')}:{os.getenv('MYSQL_PASSWORD')}"
-    f"@{os.getenv('MYSQL_HOST')}:{os.getenv('MYSQL_PORT')}/{os.getenv('MYSQL_DB')}"
-)
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
-db = SQLAlchemy(app)
 
 #csrf = CSRFProtect(app)
 
@@ -161,7 +152,7 @@ def buscar():
         return []
 @app.route('/download/<int:user_id>')
 def download_file(user_id):
-    cursor = db.cursor()
+    cursor = db.database.cursor()
     cursor.execute("SELECT filename, data FROM aprendiz WHERE idusuario  = %s", (user_id,))
     result = cursor.fetchone()
     
@@ -384,7 +375,7 @@ def descargar_informe():
 #Borrar
 @app.route('/delete/<string:idusuario>')
 def delete(idusuario):
-    cursor=db.database.cursor()
+    cursor = db.database.cursor()
     sql = "DELETE FROM aprendiz WHERE idusuario=%s"
     data = (idusuario,)
     cursor.execute(sql, data)
@@ -416,7 +407,6 @@ def edit(idusuario):
         cursor = db.database.cursor()
         sql="UPDATE aprendiz SET p_nombre=%s, s_nombre=%s, p_apellido=%s, s_apellido=%s, correo=%s, telefono=%s,  ficha=%s, competencia=%s, resultado=%s, instructor=%s, gestor=%s, fecha_sol=%s,observacion=%s, filename=%s, filetype=%s, data=%s WHERE idusuario =%s"
         data=(p_nombre,s_nombre, p_apellido, s_apellido, correo, telefono, ficha, competencia, resultado, instructor, gestor, fecha_sol, observacion,  filename,filetype,datas ,idusuario)
-
         cursor.execute(sql, data)
         db.database.commit()
     return redirect(url_for('listado'))
@@ -525,7 +515,7 @@ def cronograma():
 
 @app.route('/download_cita/<int:user_id>')
 def download_cita(user_id):
-    cursor = db.cursor()
+    cursor = db.database.cursor()
     cursor.execute("SELECT filename, data FROM citacion WHERE idcitacion = %s", (user_id,))
     result = cursor.fetchone()
     if result:
