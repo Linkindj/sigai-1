@@ -1,0 +1,33 @@
+{% extends './base.html' %}
+
+{% block title %} {% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="card">
+            <div class="card-body">
+                {% for d in data %}
+                  <div class="row">
+                    <div class="col"><label class="text-label bold-font">Nombres:</label> {{d.fullname}}</div>
+                    <div class="col"><label class="text-label bold-font">Resultado:</label> {{d.nom_resultado}}</div>
+                    <div class="col"></div>
+                    <div class="col"></div>
+                  </div>
+                  <div class="row">
+                    <div class="col"><label class="text-label bold-font">Instructor:</label> {{d.nom_instructor}}</div>
+                    <div class="col"><label class="text-label bold-font">Gestor de grupo:</label> {{d.nom_gestor}}</div>
+                  </div>   
+                  <div class="row">
+                    <div class="col"><label class="text-label bold-font">Fecha de solicitud: </label> {{d.fecha_sol}} </div>
+                  </div>
+                  <div class="row md-2">
+                    <div class="col">
+                      <label class="text-label bold-font">Observación:</label>
+                      <input type="textarea" class="form-control mb-3" name="observacion" value="{{d.observacion}}">
+                    </div>
+                </div>
+                {% endfor %}
+            </div>  
+        </div>
+    </div>
+{% endblock %}

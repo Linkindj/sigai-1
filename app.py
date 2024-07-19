@@ -134,7 +134,7 @@ def buscar():
     search=request.json['busqueda']
     try:
         cursor = db.database.cursor()
-        querySQL = "SELECT * FROM aprendiz WHERE p_nombre LIKE %s ORDER BY documento DESC"        
+        querySQL = "SELECT a.*, e.estado as estado, f.nom_ficha as nom_ficha, c.competencia as nom_competencia, r.resultado as nom_resultado, i.instructor as nom_instructor, g.nom_gestor as nom_gestor FROM aprendiz a JOIN estado e ON a.estado_sol = e.idestado JOIN ficha f ON a.ficha = f.idficha JOIN competencia c ON a.competencia = c.idcompetencia JOIN resultado r ON a.resultado = r.idresultado JOIN instructor i ON a.instructor = i.idinstructor JOIN gestor g ON a.gestor = g.idgestor WHERE p_nombre LIKE %s ORDER BY documento DESC"        
        # search_pattern = f"%{search}%"  # Agregar "%" alrededor del término de búsqueda
         cursor.execute(querySQL, (f"%{search}%",))
         resultado_busqueda = cursor.fetchall()
@@ -150,6 +150,7 @@ def buscar():
     except Exception as e:
         print(f"Ocurrió un error en def buscar: {e}")
         return []
+    
 @app.route('/download/<int:user_id>')
 def download_file(user_id):
     cursor = db.database.cursor()
@@ -258,7 +259,7 @@ def addUsuario():
                 db.database.commit() 
                 flash("ok")
                 id_solicitud = cursor.lastrowid
-            return redirect(url_for('listado', id_solicitud=id_solicitud))
+            return redirect(url_for('listado', id_solicitud=id_solicitud , show_Save=True))
         flash("No tienes permiso para acceder a esta función.")
         return redirect(url_for('home'))
     return render_template('cerrar_sesion.html')   
@@ -318,24 +319,19 @@ def addfamilia():
         return redirect(url_for('familias', cod_vivienda=id_))
     return render_template('cerrar_sesion.html') 
 
-#Registrar personas  
-@app.route('/personas_on', methods=['POST'])
-def addpersona():
-    form=formUser()
-    tipo_doc= request.form['tipo_doc']
-    ficha=request.form['ficha']
-    competencia= request.form['competencia']
-    id_=0
+@app.route('/cuenta', methods=['GET'])
+def cuenta():
     if 'username' in session:
-        if form.is_submitted:
+            username=session.get('username')
             cursor = db.database.cursor()
-            sql="INSERT INTO persona (tipo_doc, documento, p_nombre, s_nombre, p_apellido, s_apellido,correo,telefono,ficha,competencia,observacion) VALUES (%s, %s, %s, %s,%s, %s,%s,%s, %s,%s,%s)"
-            data=(tipo_doc,form.num_documento.data, form.p_nombre.data, form.s_nombre.data, form.p_apellido.data, form.s_apellido.data,form.correo.data, form.telefono.data, ficha, competencia, form.observacion.data)
-            cursor.execute(sql, data)
-            db.database.commit() 
-            flash("ok")        
-        return redirect(url_for('familias', cod_vivienda=id_))
-    return render_template('cerrar_sesion.html') 
+            cursor.execute("SELECT * FROM login WHERE username=%s", (username,))
+            myresult= cursor.fetchall()
+            insertObject = []
+            columnNames=[column[0] for column in cursor.description]
+            for record in myresult:
+                insertObject.append(dict(zip(columnNames, record)))
+            return render_template('cuenta.html', data=insertObject)
+    return render_template('cerrar_sesion.html')
 
 #Generar Informe
 @app.route('/informe_on')
@@ -426,8 +422,11 @@ def login():
             # Iniciar sesión
             session['username'] = user[1]
             session['tipo_u'] = user[4]
-            return redirect(url_for('home'))
-    return render_template('login.html', form=form)
+            session['nombres'] = user[3]       
+            return redirect(url_for('home', show_welcome=True, username=session['nombres']))
+        else:
+            return render_template('login.html', form=form, show_login=True, invalid_credentials=True)
+    return render_template('login.html', form=form, )
 
 @app.route('/logout')
 def logout():
@@ -559,4 +558,4 @@ def descargo():
     return render_template('cerrar_sesion.html')
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)

@@ -3,37 +3,45 @@
 {% block title %} {% endblock %}
 
 {% block body %}
-<img src="https://viajescasletur.es/wp-content/uploads/2020/04/Noruega-Blog.jpg">
-<div class="container">
-        <div id="carouselExampleIndicators" class="carousel slide">
-            <div class="carousel-indicators">
-              <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-              <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-              <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
-            </div>
-            <div class="carousel-inner">
-              <div class="carousel-item active">
-                <img src="https://viajescasletur.es/wp-content/uploads/2020/04/Noruega-Blog.jpg" class="d-block w-100" alt="imagen1">
-              </div>
-              <div class="carousel-item">
-                <img src="Noruega3.jpg" class="d-block w-100" alt="imagen2">
-              </div>
-              <div class="carousel-item">
-                <img src="Noruega3.jpg" class="d-block w-100" alt="imagen3">
-              </div>
-            </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-              <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-              <span class="carousel-control-next-icon" aria-hidden="true"></span>
-              <span class="visually-hidden">Next</span>
-            </button>
+<div class="card-body mt-5 mb-2 shadow-div2">
+        <div>
+          <img  src="{{url_for('static', filename='img/index.png')}}" class="img-fluid"/>
         </div>
 </div>
-<div class="center-image1">
-  <img  src="{{url_for('static', filename='img/Contrucción.png')}}" width="400" height="600"/>
-
+<div class="card-fluid shadow-card bg-light">
+  <div class="row">
+    <div class="col-4">
+      <div class="card shadow-card">
+        <img  src="{{url_for('static', filename='img/estudiantessigai.jpg')}}" class="fade-img img-fluid" />
+        <div class="card-body" style="height: 200px;">
+          <h5 class="card-title text-center">¿Que es SIGAI?</h5>
+          <p class="card-text text-center">SIGAI es una plataforma creada con el fin de realizar seguimiento a las novedades académicas de manera oportuna, facilitando los procesos de solicitudes, registros historicos, notificaciones de citaciones y planes de mejora.</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-4">
+      <div class="card shadow-card" >
+        <img  src="{{url_for('static', filename='img/portatil.jpeg')}}" class="fade-img img-fluid"/>
+        <div class="card-body" style="height: 200px;">
+          <h5 class="card-title text-center">¿Como utilizar SIGAI?</h5>
+          <p class="card-text text-center">SIGAI contiene varias módulos que funcionaran acorde a los roles de cada usuario, limitando el acceso a alguna páginas </p><br><br>
+        </div>
+      </div>
+    </div>
+    <div class="col-4">
+      <div class="card shadow-card" >
+        <img  src="{{url_for('static', filename='img/soporte.jpeg')}}" class="fade-img img-fluid"/>
+        <div class="card-body" style="height: 200px;">
+          <h5 class="card-title text-center">¿Tienes alguna duda?</h5>
+          <p class="card-text text-center">Si necesitas alguna ayuda o se presentan errores en la plataforma, puedes contactarte hoy con soporte para resolver tus dudas </p><br><br>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
+<div class="card-fluid shadow-card bg-info">
+  <div class="row">
+  </div>
+</div>
+<script src="{{ url_for('static', filename='js/welcome.js') }}"></script>
 {% endblock %}

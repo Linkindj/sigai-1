@@ -3,19 +3,17 @@
 {% block title %} {% endblock %}
 
 {% block body %}
-<body>
-    <h1 class="text-center mt5 mb-5 text-primary">SIGAI</h1>
-
-    <div class="container">
-        <div class="row">
+    <div class="card mt-5 mb-2">   
+        <div class="row icono-left">
             <div class="col">
-                <a href="#" class="btn btn-info custom-color shadow-a">Historico</a>
-                <a href="#" class="btn btn-info custom-color shadow-a">Citaciones</a>
-                <a href="#" class="btn btn-info custom-color shadow-a">Repositorio</a>
-                <a href="#" class="btn btn-info custom-color shadow-a">Volver</a>
+                <a href="/" class="btn btn-secondary custom-color shadow-a">Inicio</a>
+                <a href="/listado" class="btn btn-secondary custom-color shadow-a">Historico</a>
+                <a href="/citaciones" class="btn btn-secondary custom-color shadow-a">Citaciones</a>
+                <a href="/repositorio" class="btn btn-secondary custom-color shadow-a">Repositorio</a>
             </div>
         </div>
-        <br>
+    </div>
+    <div class="container">
         <div class="card">
             <div class="card-body">
                 <form id="registro" action="/register_on" method="POST" enctype="multipart/form-data">  
@@ -149,6 +147,4 @@
             </div>
         </div>
     </div>
-    
-</body>
 {% endblock %}

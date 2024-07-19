@@ -7,66 +7,71 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <title>{% block title %}{% endblock %}</title>
 </head>
 {% block customCSS %}
 
 {% endblock %}
 <body>
-  <nav class="navbar navbar-dark bg-dark fixed-top">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="/"><i class="bi bi-house"></i><img src="{{url_for('static', filename='img/SIGAI.png')}}" alt="" style="width: 80px; height: 40px;" alt="Descripción de la imagen"></a>
-      {% if session.get('username') %}
-      {{ session.get('username') }}
-    {% else %}
-      <div class="alert alert-danger">
-        You are not logged in.
-    {% endif %}
-      <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar"  aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel">
-        <div class="offcanvas-header">
-          <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">SIGAI</h5>
-          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-        </div>
-            <div class="offcanvas-body"> 
-              <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-                <li class="nav-item">
-                <a class="nav-link" aria-current="page" href="/listado"></i> Historico de reportes </a>
-                </li>
-                <li class="nav-item">
-                <a class="nav-link" href="/register">Solicitar comité</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/citacion">Citaciones</a>
-                    </li>
-                <li class="nav-item dropdown">
+  <div class="nav-item">
+    <nav class="navbar navbar-dark bg-dark fixed-top">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="/"><i class="bi bi-house"></i><img src="{{url_for('static', filename='img/SIGAI.png')}}" alt="" style="width: 80px; height: 40px;" alt="Descripción de la imagen"></a>
+        {% if session.get('username') %}
+        {{ session.get('username') }}
+      {% else %}
+        <div class="alert alert-danger">
+          You are not logged in.
+      {% endif %}
+        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar"  aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">SIGAI</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+          </div>
+              <div class="offcanvas-body"> 
+                <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                   <li class="nav-item">
-                    <a class="nav-link" href="#">Repositorio de documentos  </a>
-                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Notificaciones</a>
-                 </li>
-                 <li class="nav-item">
-                  <a class="nav-link" href="revision.html">Cuenta</a>
-               </li>
+                  <a class="nav-link" aria-current="page" href="/listado"></i> Historico de reportes </a>
+                  </li>
+                  <li class="nav-item">
+                  <a class="nav-link" href="/register">Solicitar comité</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link" href="/citacion">Citaciones</a>
+                      </li>
+                  <li class="nav-item dropdown">
+                    <li class="nav-item">
+                      <a class="nav-link" href="#">Repositorio de documentos  </a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link" href="#">Notificaciones</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="cuenta.html">Cuenta</a>
                 </li>
-                <div style="margin-left: 4px;">
-                <a href="/logout" class="text-secondary">Cerrar sesión</a>
-                 </div>   
-            </ul>
+                  </li>
+                  <div style="margin-left: 4px;">
+                  <a href="/logout" class="text-secondary">Cerrar sesión</a>
+                  </div>   
+              </ul>
+        </div>
       </div>
-    </div>
-</nav>
-    {% block body %}
-    {% endblock %}
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-    <script src="{{ url_for('static', filename ='js/buscador.js') }}"></script>
-    <script src="{{ url_for('static', filename ='js/confirm.js') }}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  </nav>
+      {% block body %}
+      {% endblock %}
+  </div>
+      <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+      <script src="{{ url_for('static', filename ='js/buscador.js') }}"></script>
+      <script src="{{ url_for('static', filename ='js/confirm.js') }}"></script>
+
+
 </body>
 </html>

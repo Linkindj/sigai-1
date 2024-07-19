@@ -1,13 +1,13 @@
 {% for d in resultado %}  
 <tr>
-  <td class="articulo">{{d.idusuario}}</td>
-  <td class="articulo">{{d.p_nombre}} {{d.s_nombre}} {{d.p_apellido}} {{d.s_apellido}}</td>
-  <td class="articulo">{{d.documento}}</td>
-  <td class="articulo">{{d.ficha}} {{d.nom_ficha}}</td>
-  <td class="articulo bg-success custom-color ">{{d.estado}}</td>
-  <td class="articulo"><button type="button" class="btn btn-info btn-sm" id=btn-detalles{{d.idusuario}} data-bs-toggle="modal" data-bs-target="#staticBackdrop1{{d.idusuario}}">detalles</button></td>
-  <td class="articulo"><button type="button" class="btn btn-info btn-sm" id=btn-edit{{d.idusuario}} data-bs-toggle="modal" data-bs-target="#staticBackdrop{{d.idusuario}}">Editar</button></td>
-  <td class="articulo"><a class="btn btn-info btn-sm" href="{{url_for('delete', idusuario=d.idusuario)}}">Eliminar</a></td>
+    <td class="articulo">{{d.idusuario}}</td>
+    <td class="articulo">{{d.p_nombre}} {{d.s_nombre}} {{d.p_apellido}} {{d.s_apellido}}</td>
+    <td class="articulo">{{d.documento}}</td>
+    <td class="articulo">{{d.ficha}} {{d.nom_ficha}}</td>
+    <td class="articulo bg-success custom-color ">{{d.estado}}</td>
+    <td class="articulo"><button type="button" class="btn btn-info btn-sm" id=btn-detalles{{d.idusuario}} data-bs-toggle="modal" data-bs-target="#staticBackdrop1{{d.idusuario}}">Detalles</button></td>
+    <td class="articulo"><button type="button" class="btn btn-info btn-sm" id=btn-edit{{d.idusuario}} data-bs-toggle="modal" data-bs-target="#staticBackdrop{{d.idusuario}}">Editar</button></td>
+    <td class="articulo"><a class="btn btn-info btn-sm" href="{{url_for('delete', idusuario=d.idusuario)}}">Eliminar</a></td>
 </tr>
 {% endfor %}  
                 <!-- Modal -->

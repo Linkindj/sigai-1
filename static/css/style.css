@@ -28,8 +28,23 @@ background-color: #432345;
     margin-top: 30px;
 }
 .shadow-div {
-    box-shadow: 0 4px 8px rgba(0, 0.1, 0, 0.2);
+    box-shadow: 0 4px 8px rgba(0, 0.2, 0, 0.2);
     padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 0px;
+    background-color: #fff;
+    align-items: center;
+}
+.shadow-card {
+    box-shadow: 0 4px 8px rgba(0, 0.2, 0, 0.2);
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 0px;
+    background-color: #fff;
+    align-items: center;
+}
+.shadow-div2 {
+    box-shadow: 0 4px 8px rgba(0, 0.1, 0, 0.2);
     margin-bottom: 20px;
     border-radius: 0px;
     background-color: #fff;
@@ -63,11 +78,19 @@ background-color: #432345;
 }
 
 .icono-left{
-    margin:1%;
+    margin-top:1.5%;
+    margin-bottom:0.5%;
+    margin-left: 1%;
 }
 .text-gray{
     color:cadetblue;
     align-items: center;
     text-align: center;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+.fade-img {
+    width: 80%;
+    height: 300;
+    -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 70%, rgba(0,0,0,0) 100%);
+    mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 70%, rgba(0,0,0,0) 100%);
 }

@@ -27,18 +27,16 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById("toggleArrow").innerHTML = "&#9660;";
     }
 });
-$(document).ready(function() {
-  $('#nextButton').click(function() {
-      $('#module1').hide();
-      $('#module2').show();
-      $('#nextButton').hide();
-      $('#prevButton').show();
-  });
 
-  $('#prevButton').click(function() {
-      $('#module2').hide();
-      $('#module1').show();
-      $('#prevButton').hide();
-      $('#nextButton').show();
-  });
-});
+const urlParams = new URLSearchParams(window.location.search);
+const showWelcome = urlParams.get('show_welcome');
+const username = urlParams.get('username');
+
+// Mostrar el alert si show_welcome está presente
+if (showWelcome && username) {
+    Swal.fire({
+        title: '¡Bienvenido!',
+        text: `Bienvenido ${username}`,
+        icon: 'success'
+    });
+}
