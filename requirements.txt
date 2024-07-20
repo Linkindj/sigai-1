@@ -44,3 +44,4 @@ WTForms
 zipp                  
 python-dotenv
 pymysql
+flask_mail
