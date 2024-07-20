@@ -22,3 +22,14 @@
       });
   }
 
+  const urlParams2 = new URLSearchParams(window.location.search);
+  const showCita = urlParams.get('show_cita');
+ 
+  if (showCita) {
+      Swal.fire({
+          title: '¡Enviado!',
+          text: `Cita programada correctamente`,
+          icon: 'success'
+      });
+  }
+

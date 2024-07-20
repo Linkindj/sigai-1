@@ -6,6 +6,8 @@ from flask_wtf.csrf import CSRFProtect, CSRFError
 from flask_wtf import FlaskForm
 from wtforms import PasswordField, StringField, SubmitField, DateField, EmailField, TextAreaField
 from wtforms.validators import DataRequired, Email
+from datetime import datetime
+from flask_mail import Mail, Message
 import openpyxl
 import os
 import database as db
@@ -489,7 +491,7 @@ def citar(idusuario):
         else:    
             flash("No tienes permiso para acceder a esta función.")
             return render_template('sinpermiso.html')      
-    return redirect(url_for('cronograma'))
+    return redirect(url_for('cronograma', show_cita=True))
 
 @app.route('/cronograma', methods=['GET'])
 def cronograma():
@@ -503,9 +505,16 @@ def cronograma():
             columnNames=[column[0] for column in cursor.description]    
             for record in myresult:
                 insertObject.append(dict(zip(columnNames, record)))
-        
+
+            events = []
+            for row in myresult:
+                event_date = row[2].strftime('%Y-%m-%d')
+                events.append({
+                'title': 'Comité',  # Título del evento
+                'start': event_date,  # Fecha y hora de inicio
+        })
             cursor.close()
-            return render_template('/cronograma.html',form=form, data=insertObject)
+            return render_template('/cronograma.html',form=form, data=insertObject, events=events)
 
         else:    
             flash("No tienes permiso para acceder a esta función.")
@@ -556,6 +565,79 @@ def descargo():
 
         return render_template('descargo.html',form=form, data=insertObject)
     return render_template('cerrar_sesion.html')
+################################################################
+#NOTIFICACIÓN
+
+def create_notification(user_id, message):
+    cursor = db.cursor()
+    sql = "INSERT INTO notifications (user_id, message) VALUES (%s, %s)"
+    val = (user_id, message)
+    cursor.execute(sql, val)
+    db.commit()
+    cursor.close()
+
+@app.route('/send_notification', methods=['POST'])
+def send_notification():
+    if 'username' in session:
+        user_id = session['user_id']  # Asumiendo que tienes el user_id en la sesión
+        message = "You have a new notification"
+        create_notification(user_id, message)
+        return "Notification sent"
+    else:
+        return "You need to be logged in to receive notifications"
+    
+from flask_mail import Mail, Message
+
+# Configuración de Flask-Mail
+app.config['MAIL_SERVER'] = 'smtp.yourmailserver.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USERNAME'] = 'your-email@example.com'
+app.config['MAIL_PASSWORD'] = 'your-email-password'
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USE_SSL'] = False
+
+mail = Mail(app)
+
+def send_email(to, subject, body):
+    msg = Message(subject, sender=app.config['MAIL_USERNAME'], recipients=[to])
+    msg.body = body
+    mail.send(msg)
+
+@app.route('/send_email_notification', methods=['POST'])
+def send_email_notification():
+    if 'username' in session:
+        user_email = session['email']  # Asumiendo que tienes el email en la sesión
+        subject = "New Notification"
+        body = "You have a new notification in your profile"
+        send_email(user_email, subject, body)
+        return "Email sent"
+    else:
+        return "You need to be logged in to receive email notifications"
+
+@app.route('/profile')
+def profile():
+    if 'username' in session:
+        user_id = session['user_id']  # Asumiendo que tienes el user_id en la sesión
+        cursor = db.cursor(dictionary=True)
+        cursor.execute("SELECT * FROM notifications WHERE user_id = %s AND is_read = FALSE", (user_id,))
+        notifications = cursor.fetchall()
+        cursor.close()
+        return render_template('profile.html', notifications=notifications)
+    else:
+        return "You need to be logged in to view your profile"
+    
+@app.route('/mark_notification_read/<int:notification_id>', methods=['POST'])
+def mark_notification_read(notification_id):
+    if 'username' in session:
+        user_id = session['user_id']  # Asumiendo que tienes el user_id en la sesión
+        cursor = db.cursor()
+        cursor.execute("UPDATE notifications SET is_read = TRUE WHERE id = %s AND user_id = %s", (notification_id, user_id))
+        db.commit()
+        cursor.close()
+        return "Notification marked as read"
+    else:
+        return "You need to be logged in to perform this action"
 
 if __name__ == '__main__':
     app.run(debug=True)
+
