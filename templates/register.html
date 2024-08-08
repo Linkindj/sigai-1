@@ -119,7 +119,7 @@
                     </div>
                     <div class="row md-2">
                         <div class="col">
-                            <label> Fecha de solicitud</label> <input type="date" class="form-control" id="fecha_sol"  name="fecha_sol" required> 
+                            <label> Fecha de solicitud</label> <input type="date" class="form-control" id="fecha_sol" value="fecha_sol"  name="fecha_sol" disabled> 
                         </div>
                         <div class="col"></div>
                         <div class="col"></div>
@@ -147,4 +147,6 @@
             </div>
         </div>
     </div>
+    <script src="{{ url_for('static', filename ='js/fechas.js') }}"></script>
+    <script src="{{ url_for('static', filename ='js/confirm.js') }}"></script>
 {% endblock %}

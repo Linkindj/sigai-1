@@ -7,7 +7,7 @@ from flask_wtf import FlaskForm
 from wtforms import PasswordField, StringField, SubmitField, DateField, EmailField, TextAreaField
 from wtforms.validators import DataRequired, Email
 from datetime import datetime
-from flask_mail import Mail, Message
+from flask_mail import Mail, Message,Attachment
 import openpyxl
 import os
 import database as db
@@ -123,8 +123,16 @@ def listado():
             instructor = []
             for record in instructor_result:
                 instructor.append(dict(zip(instructor_columnNames, record)))
+            
+            # Consulta a la tabla 'gestor' para el select
+            cursor.execute("SELECT * FROM gestor")
+            gestor_result = cursor.fetchall()
+            gestor_columnNames = [column[0] for column in cursor.description]
+            gestor = []
+            for record in gestor_result:
+                gestor.append(dict(zip(gestor_columnNames, record)))
             cursor.close()
-            return render_template(f'{PATH_URL}/list_user.html',form=form, data=insertObject,tipo_doc=tipo_doc, ficha=ficha, competencia=competencia, resultado=resultado, instructor=instructor)
+            return render_template(f'{PATH_URL}/list_user.html',form=form, data=insertObject,tipo_doc=tipo_doc, ficha=ficha, competencia=competencia, resultado=resultado, instructor=instructor, gestor=gestor)
         else:    
             flash("No tienes permiso para acceder a esta función.")
             return render_template('sinpermiso.html')
@@ -244,7 +252,7 @@ def addUsuario():
     resultado=request.form['resultado']
     instructor=request.form['instructor']
     gestor=request.form['gestor']
-    fecha_sol=request.form['fecha_sol']
+    fecha_sol=datetime.now().date()
     estado_sol=1
     archivo=request.files['file']
     if archivo:
@@ -335,6 +343,34 @@ def cuenta():
             return render_template('cuenta.html', data=insertObject)
     return render_template('cerrar_sesion.html')
 
+#Editar
+@app.route('/edit_cuenta/<string:idlogin>', methods=['POST'])
+def edit_cuenta(idlogin):
+    usernames= request.form['username']
+    nombres= request.form['nombres']
+    correo= request.form['correo']
+    if 'username' in session:
+        flash = idlogin
+        cursor = db.database.cursor()
+        sql="UPDATE login SET username=%s, fullname=%s, correo=%s WHERE idlogin=%s"
+        data=(usernames, nombres, correo, idlogin)
+        cursor.execute(sql, data)
+        db.database.commit()
+    return redirect(url_for('cuenta', Show_Edit=True))
+
+@app.route('/cambiocontrasena/<string:idlogin>', methods=['POST'])
+def cambiocontrasena(idlogin):
+    username= request.form['username']
+    nombres= request.form['nombres']
+    correo= request.form['correo']
+    if username in session:
+        cursor = db.database.cursor()
+        sql="UPDATE login SET username=%s, fullname=%s, correo=%s WHERE idlogin=%s"
+        data=(username, nombres, correo, idlogin)
+        cursor.execute(sql, data)
+        db.database.commit()
+    return redirect(url_for('cuenta'))
+
 #Generar Informe
 @app.route('/informe_on')
 def generarInforme():
@@ -378,7 +414,7 @@ def delete(idusuario):
     data = (idusuario,)
     cursor.execute(sql, data)
     db.database.commit()
-    return redirect(url_for('listado'))
+    return redirect(url_for('listado', show_Delete=True))
 
 #Editar
 @app.route('/edit/<string:idusuario>', methods=['POST'])
@@ -394,7 +430,6 @@ def edit(idusuario):
     resultado= request.form['resultado']
     instructor = request.form['instructor']
     gestor = request.form['gestor']
-    fecha_sol= request.form['fecha_sol']
     observacion=request.form['observacion']
     archivo=request.files['file']
     if archivo:
@@ -403,11 +438,11 @@ def edit(idusuario):
         datas = archivo.read()
     if p_nombre:
         cursor = db.database.cursor()
-        sql="UPDATE aprendiz SET p_nombre=%s, s_nombre=%s, p_apellido=%s, s_apellido=%s, correo=%s, telefono=%s,  ficha=%s, competencia=%s, resultado=%s, instructor=%s, gestor=%s, fecha_sol=%s,observacion=%s, filename=%s, filetype=%s, data=%s WHERE idusuario =%s"
-        data=(p_nombre,s_nombre, p_apellido, s_apellido, correo, telefono, ficha, competencia, resultado, instructor, gestor, fecha_sol, observacion,  filename,filetype,datas ,idusuario)
+        sql="UPDATE aprendiz SET p_nombre=%s, s_nombre=%s, p_apellido=%s, s_apellido=%s, correo=%s, telefono=%s,  ficha=%s, competencia=%s, resultado=%s, instructor=%s, gestor=%s,observacion=%s, filename=%s, filetype=%s, data=%s WHERE idusuario =%s"
+        data=(p_nombre,s_nombre, p_apellido, s_apellido, correo, telefono, ficha, competencia, resultado, instructor, gestor, observacion,  filename,filetype,datas ,idusuario)
         cursor.execute(sql, data)
         db.database.commit()
-    return redirect(url_for('listado'))
+    return redirect(url_for('listado', Show_Edit=True))
 
 @app.route('/login', methods=['GET', 'POST'])
 #/login: Esta ruta maneja la página de inicio de sesión. Si se envía un formulario POST.  Si se accede a la página mediante GET, muestra el formulario de inicio de sesión.
@@ -422,6 +457,7 @@ def login():
   
         if user:
             # Iniciar sesión
+            session['user_id'] = user[5]
             session['username'] = user[1]
             session['tipo_u'] = user[4]
             session['nombres'] = user[3]       
@@ -485,9 +521,38 @@ def citar(idusuario):
             sql2="UPDATE aprendiz SET estado_sol=%s WHERE idusuario=%s"
             data2=(estado,idusuario)
             cursor.execute(sql2, data2)
+            
+            # Obtener el correo electrónico del usuario
+            cursor.execute("SELECT * FROM aprendiz WHERE idusuario = %s", (idusuario,))
+            datos = cursor.fetchone()
+            p_nombre = datos[3]
+            s_nombre = datos[4]
+            p_apellido = datos[5]
+            s_apellido = datos[6]
+            user_email = datos[7]
+            image_path= "static/img/SIGAI.png"
+
+             # Enviar notificación interna
+            message = f"""<html>
+                            <body>
+                                <h2>Hola, {p_nombre} {s_nombre} {p_apellido} {s_apellido}</h2>
+                                <p>Tienes una citación programada para el <strong>{fecha_cita}</strong> a las <strong>{hora_cita}</strong> en <strong>{lugar_cita}</strong>.<p>
+                                <p>Para realización de comité de evaluación por novedades presentada durante tu proceso educativo</p>
+                                <p>Por favor, asegúrate de estar presente a tiempo en el lugar citado.</p>
+                                <p>Saludos,</p>
+                                <p><em>Comité de evaluación</em></p>
+                                <p><img src="cid:image1" alt="Imagen"></p>
+                            </body>
+                        </html>     
+                        """
+
+            # Enviar correo electrónico
+            send_email(user_email, "Tienes una citación del comité de evaluación", message, image_path)
 
             db.database.commit() 
-            flash("ok")  
+
+            flash("Cita programada exitosamente.")
+
         else:    
             flash("No tienes permiso para acceder a esta función.")
             return render_template('sinpermiso.html')      
@@ -509,8 +574,9 @@ def cronograma():
             events = []
             for row in myresult:
                 event_date = row[2].strftime('%Y-%m-%d')
+                event_time= row[3]  
                 events.append({
-                'title': 'Comité',  # Título del evento
+                'title': event_time,  # Título del evento
                 'start': event_date,  # Fecha y hora de inicio
         })
             cursor.close()
@@ -568,75 +634,35 @@ def descargo():
 ################################################################
 #NOTIFICACIÓN
 
-def create_notification(user_id, message):
-    cursor = db.cursor()
-    sql = "INSERT INTO notifications (user_id, message) VALUES (%s, %s)"
-    val = (user_id, message)
-    cursor.execute(sql, val)
-    db.commit()
-    cursor.close()
-
-@app.route('/send_notification', methods=['POST'])
-def send_notification():
-    if 'username' in session:
-        user_id = session['user_id']  # Asumiendo que tienes el user_id en la sesión
-        message = "You have a new notification"
-        create_notification(user_id, message)
-        return "Notification sent"
-    else:
-        return "You need to be logged in to receive notifications"
-    
-from flask_mail import Mail, Message
-
 # Configuración de Flask-Mail
-app.config['MAIL_SERVER'] = 'smtp.yourmailserver.com'
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 587
-app.config['MAIL_USERNAME'] = 'your-email@example.com'
-app.config['MAIL_PASSWORD'] = 'your-email-password'
+app.config['MAIL_USERNAME'] = 'sigaiaplication@gmail.com'
+app.config['MAIL_PASSWORD'] = 'gshqadtjktozwbny'
 app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USE_SSL'] = False
 
 mail = Mail(app)
-
-def send_email(to, subject, body):
+        
+def send_email(to, subject, body, image_path=None):
     msg = Message(subject, sender=app.config['MAIL_USERNAME'], recipients=[to])
     msg.body = body
+    msg.html = body
+
+    if image_path and os.path.isfile(image_path):
+        with app.open_resource(image_path) as img:
+            # Adjuntar la imagen con un Content-ID
+            msg.attach(
+                os.path.basename(image_path),  # Nombre del archivo
+                'image/png',                  # Tipo de contenido
+                img.read(),                   # Contenido del archivo
+                headers={"Content-ID": "<image1>"}  # Content-ID para referenciar en HTML
+            )
+    else:
+        print(f"El archivo {image_path} no se encuentra.")
     mail.send(msg)
 
-@app.route('/send_email_notification', methods=['POST'])
-def send_email_notification():
-    if 'username' in session:
-        user_email = session['email']  # Asumiendo que tienes el email en la sesión
-        subject = "New Notification"
-        body = "You have a new notification in your profile"
-        send_email(user_email, subject, body)
-        return "Email sent"
-    else:
-        return "You need to be logged in to receive email notifications"
 
-@app.route('/profile')
-def profile():
-    if 'username' in session:
-        user_id = session['user_id']  # Asumiendo que tienes el user_id en la sesión
-        cursor = db.cursor(dictionary=True)
-        cursor.execute("SELECT * FROM notifications WHERE user_id = %s AND is_read = FALSE", (user_id,))
-        notifications = cursor.fetchall()
-        cursor.close()
-        return render_template('profile.html', notifications=notifications)
-    else:
-        return "You need to be logged in to view your profile"
-    
-@app.route('/mark_notification_read/<int:notification_id>', methods=['POST'])
-def mark_notification_read(notification_id):
-    if 'username' in session:
-        user_id = session['user_id']  # Asumiendo que tienes el user_id en la sesión
-        cursor = db.cursor()
-        cursor.execute("UPDATE notifications SET is_read = TRUE WHERE id = %s AND user_id = %s", (notification_id, user_id))
-        db.commit()
-        cursor.close()
-        return "Notification marked as read"
-    else:
-        return "You need to be logged in to perform this action"
 
 if __name__ == '__main__':
     app.run(debug=True)

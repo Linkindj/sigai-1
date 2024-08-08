@@ -4,30 +4,117 @@
 
 {% block body %}
     <div class="container">
-        <div class="card">
+        <div class="card mt-5">
             <div class="card-body">
                 {% for d in data %}
-                  <div class="row">
-                    <div class="col"><label class="text-label bold-font">Nombres:</label> {{d.fullname}}</div>
-                    <div class="col"><label class="text-label bold-font">Resultado:</label> {{d.nom_resultado}}</div>
-                    <div class="col"></div>
-                    <div class="col"></div>
+                  <div class="container mt-5">
+                      <h1 class="mb-4">Datos del usuario</h1>
+                      <div class="card">
+                          <div class="card-body">
+                              <h5 class="card-title">Datos de la cuenta</h5>
+                              <p class="card-text"><strong>Usuario: </strong>{{d.username}}</p>
+                              <p class="card-text"><strong>Nombres: </strong>{{d.fullname}}</p>
+                              <p class="card-text"><strong>Documento: </strong>{{d.documento}}</p>
+                              <p class="card-text"><strong>Tipo de usuario: </strong>{{d.tipo_u}}</p>
+                              <p class="card-text"><strong>Correo Electronico: </strong>{{d.correo}}</p>
+                              <p class="articulo"><button type="button" class="btn btn-info btn-sm text-white  " id=btn-editar{{d.idlogin}} data-bs-toggle="modal" data-bs-target="#staticBackdrop{{d.idusuario}}">Editar cuenta</button></p>
+                              <p class="articulo"><button type="button" class="btn btn-info btn-sm text-white  " id=btn-editar{{d.idlogin}} data-bs-toggle="modal" data-bs-target="#staticBackdrop1{{d.idusuario}}">Cambiar Contraseña</button></p>
+                            </div>
+                      </div>
                   </div>
-                  <div class="row">
-                    <div class="col"><label class="text-label bold-font">Instructor:</label> {{d.nom_instructor}}</div>
-                    <div class="col"><label class="text-label bold-font">Gestor de grupo:</label> {{d.nom_gestor}}</div>
-                  </div>   
-                  <div class="row">
-                    <div class="col"><label class="text-label bold-font">Fecha de solicitud: </label> {{d.fecha_sol}} </div>
+                  <!--Modal 1-->
+                  <div class="modal fade" id="staticBackdrop{{d.idusuario}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                          <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                              <div class="modal-header bg-info custom-color shadow-div" >
+                                <h1 class="modal-title fs-5 text-white" id="staticBackdropLabel">Actualizar datos</h1>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                              </div>
+                            <div class="modal-body">
+                                <form action="/edit_cuenta/{{d.idlogin}}" method="post" enctype="multipart/form-data">
+                                  <div class="row mb-4">
+                                    <div class="col">
+                                      <label>Documento</label>
+                                      <input type="text" class="form-control mb-3" name="documento" placeholder="Documento" value="{{d.documento}}" disabled>
+                                    </div>  
+                                  </div>
+                                  <div class="row mb-4">
+                                      <div class="col">
+                                        <label>Nombre de usuario</label>
+                                        <input type="text" class="form-control mb-3" name="username" placeholder="Nombre de usuario" value="{{d.username}}">
+                                      </div>  
+                                  </div>
+                                  <div class="row mb-4">
+                                    <div class="col"> 
+                                      <label>Nombre completo</label>
+                                      <input type="text" class="form-control mb-3" name="nombres" placeholder="Nombre completo" value="{{d.fullname}}">
+                                    </div>  
+                                  </div>
+                                  <div class="row md-2">
+                                      <div class="col">
+                                        <label>Tipo de usuario</label>
+                                        <input type="text" class="form-control mb-3" name="tipo_u" placeholder="tipo_u"  value="{{d.tipo_u}}" disabled>
+                                      </div>
+                                      <div class="col">
+                                          <div class="col">
+                                        <label>Correo</label>
+                                            <input type="email" class="form-control mb-3" name="correo" placeholder="Correo" value="{{d.correo}}">
+                                          </div>
+                                      </div>
+                                  </div>
+                                    <div class="col">
+                                      <button type="submit" class="btn btn-secondary">Modificar datos</button>
+                                    </div>
+
+                                </form>                         
+                            </div>
+                            </div>
+                        </div>
+                      </div>
+                      <!--Modal 2-->
+                  <div class="modal fade" id="staticBackdrop1{{d.idusuario}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                      <div class="modal-content">
+                        <div class="modal-header bg-info custom-color shadow-div" >
+                          <h1 class="modal-title fs-5 text-white" id="staticBackdropLabel">Cambiar contraseña</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                      <div class="modal-body">
+                          <form action="/cambiar_contrasena/{{d.idlogin}}" method="post" enctype="multipart/form-data">
+                            <div class="row mb-4">
+                                <div class="col">
+                                  <label>Contraseña actual</label>
+                                  <input type="password" class="form-control mb-3" name="username">
+                                </div>  
+                            </div>
+                            <div class="row mb-4">
+                              <div class="col"> 
+                                <label>Nueva contraseña</label>
+                                <input type="password" class="form-control mb-3" name="nombres">
+                              </div>  
+                            </div>
+                            <div class="row md-2">
+                                <div class="col">
+                                    <div class="col">
+                                  <label>Confirma nueva contraseña</label>
+                                      <input type="password" class="form-control mb-3" name="correo">
+                                    </div>
+                                </div>
+                            </div>
+                              <div class="col">
+                                <button type="submit" class="btn btn-secondary">Cambiar</button>
+                              </div>
+                          </form>                         
+                      </div>
+                      </div>
                   </div>
-                  <div class="row md-2">
-                    <div class="col">
-                      <label class="text-label bold-font">Observación:</label>
-                      <input type="textarea" class="form-control mb-3" name="observacion" value="{{d.observacion}}">
-                    </div>
                 </div>
+                  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+                  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+                  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>  
                 {% endfor %}
             </div>  
         </div>
     </div>
+    <script src="{{ url_for('static', filename='js/welcome.js') }}"></script>
 {% endblock %}

@@ -4,6 +4,7 @@
 
 {% block body %}
 <body>
+  
     <h1 class="text-center mt5 mb-5 text-primary">SIGAI</h1>
 
     <div class="container">
@@ -65,9 +66,9 @@
                                 <label>Resultado</label>
                                 <input type="text" class="form-control mb-3" name="resultado" value="{{d.resultado}}" disabled>
                                 <label>Fecha de citación</label>
-                                <input type="date" class="form-control mb-3" name="fecha_cita"  required>
+                                <input type="date" id="fecha{{d.idusuario}}" class="form-control mb-3" name="fecha_cita" required>
                                 <label>Hora</label>
-                                <input type="time" class="form-control mb-3" name="hora_cita"  required>
+                                <input type="time"  class="form-control mb-3" name="hora_cita"  required>
                                 <label>Lugar de citación</label>
                                 <input type="text" class="form-control mb-3" name="lugar_cita" required>
                                 <label>Asunto</label>
@@ -88,5 +89,32 @@
             </div>
         </div>
     </div>
+    <script>
+    function setDateLimits(modalId) {
+        const today = new Date();
+        const nextYear = new Date(today.getFullYear() + 1, 11, 31); // Fin del próximo año
+
+        const minDate = today.toISOString().split('T')[0]; // Formato YYYY-MM-DD
+        const maxDate = nextYear.toISOString().split('T')[0]; // Formato YYYY-MM-DD
+
+        // Busca el campo de fecha dentro del modal con el ID proporcionado
+        const fechaInput = document.querySelector(`#${modalId}   input[type="date"]`);
+        if (fechaInput) {
+            fechaInput.setAttribute('min', minDate);
+            fechaInput.setAttribute('max', maxDate);
+        } else {
+            console.error('No se encontró el campo de fecha con el ID:', `#${modalId} #fecha`);
+        }
+    }
+
+    // Configura el evento para cada botón que abre un modal
+    document.querySelectorAll('[data-bs-toggle="modal"]').forEach(button => {
+        button.addEventListener('click', () => {
+            // Extrae el ID del modal del atributo data-bs-target
+            const modalId = button.getAttribute('data-bs-target').substring(1); 
+            setDateLimits(modalId);
+        });
+    });
+  </script>
 </body>
 {% endblock %}

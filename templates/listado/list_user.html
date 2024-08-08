@@ -40,7 +40,7 @@
                         <td class="articulo bg-success custom-color ">{{d.estado}}</td>
                         <td class="articulo"><button type="button" class="btn btn-info btn-sm" id=btn-detalles{{d.idusuario}} data-bs-toggle="modal" data-bs-target="#staticBackdrop1{{d.idusuario}}">Detalles</button></td>
                         <td class="articulo"><button type="button" class="btn btn-info btn-sm" id=btn-edit{{d.idusuario}} data-bs-toggle="modal" data-bs-target="#staticBackdrop{{d.idusuario}}">Editar</button></td>
-                        <td class="articulo"><a class="btn btn-info btn-sm" href="{{url_for('delete', idusuario=d.idusuario)}}">Eliminar</a></td>
+                        <td class="articulo"><a class="btn btn-info btn-sm delete-link" href="{{url_for('delete', idusuario=d.idusuario)}}">Eliminar</a></td>
                     </tr>
                   {% endfor%}
                     </tbody>
@@ -114,7 +114,7 @@
                           
                             <div class="row md-4">
                                 <div class="col">
-                                  <label class="text-label bold-font">Estado: </label>
+                                  <label class="text-label bold-font">Estado actual de la solicitud: </label>
                                     <input type="text" class="form-control text-center" value="{{d.estado}}" name="estado" disabled>
                                 </div>
                             </div>
@@ -208,8 +208,8 @@
                                         <label>Gestor de grupo</label>
                                           <select class="form-select" id="gestor" name="gestor" onchange="mostrarSeleccion()">
                                               <option selected></option>
-                                              {% for d in instructor %}
-                                              <option value="{{d.instructor}}">{{d.gestor}}</option>
+                                              {% for d in gestor %}
+                                              <option value="{{d.idgestor}}">{{d.nom_gestor}}</option>
                                               {% endfor %}
                                           </select>
                                           <p id="opcionSeleccionada"></p>
@@ -218,15 +218,6 @@
                                       <div class="col"></div>
                                       <div class="col"></div>
                                   </div>
-                                  <div class="row md-2">
-                                      <div class="col">
-                                          <label> Fecha de solicitud</label> <input type="date" class="form-control" id="fecha_sol"  name="fecha_sol" value="{{fecha_sol}}" required> 
-                                      </div>
-                                      <div class="col"></div>
-                                      <div class="col"></div>
-                                      <div class="col"></div>
-                                  </div>
-                                  <br>
                                   <div class="row md-2">
                                       <div class="col">
                                         <input type="textarea" class="form-control mb-3" name="observacion" value="{{d.observacion}}">
@@ -252,5 +243,8 @@
                     {% endfor %}    
         </div>
       </div>
+      
       <script src="{{ url_for('static', filename='js/welcome.js') }}"></script>
+
 {% endblock %}
+<script src="{{ url_for('static', filename='js/confirm.js') }}"></script>
