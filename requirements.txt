@@ -44,5 +44,5 @@ WTForms
 zipp                  
 python-dotenv
 pymysql
-datatime
+datetime
 flask_mail
