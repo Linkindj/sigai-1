@@ -12,7 +12,7 @@
   <div class="row">
     <div class="col-4">
       <div class="card shadow-card">
-        <img  src="{{url_for('static', filename='img/estudiantessigai.jpg')}}" class="fade-img img-fluid" />
+        <img  src="{{url_for('static', filename='img/dudas.png')}}" class="fade-img img-fluid" />
         <div class="card-body" style="height: 200px;">
           <h5 class="card-title text-center">¿Que es SIGAI?</h5>
           <p class="card-text text-center">SIGAI es una plataforma creada con el fin de realizar seguimiento a las novedades académicas de manera oportuna, facilitando los procesos de solicitudes, registros historicos, notificaciones de citaciones y planes de mejora.</p>
@@ -21,19 +21,19 @@
     </div>
     <div class="col-4">
       <div class="card shadow-card" >
-        <img  src="{{url_for('static', filename='img/portatil.jpeg')}}" class="fade-img img-fluid"/>
+        <img  src="{{url_for('static', filename='img/portatil.png')}}" class="fade-img img-fluid"/>
         <div class="card-body" style="height: 200px;">
           <h5 class="card-title text-center">¿Como utilizar SIGAI?</h5>
-          <p class="card-text text-center">SIGAI contiene varias módulos que funcionaran acorde a los roles de cada usuario, limitando el acceso a alguna páginas </p><br><br>
+          <p class="card-text text-center">SIGAI contiene varios módulos que funcionaran acorde a los roles de cada usuario, limitando el acceso a algunas páginas. Sólo las personas autorizadas cuentan con usuario. Si requiere capacitación sobre su uso deberá realizar solicitud por medio de los contactos dispuestos en la parte inferior de está página. </p><br><br>
         </div>
       </div>
     </div>
     <div class="col-4">
       <div class="card shadow-card" >
-        <img  src="{{url_for('static', filename='img/soporte.jpeg')}}" class="fade-img img-fluid"/>
+        <img  src="{{url_for('static', filename='img/soporte.png')}}" class="fade-img img-fluid"/>
         <div class="card-body" style="height: 200px;">
           <h5 class="card-title text-center">¿Tienes alguna duda?</h5>
-          <p class="card-text text-center">Si necesitas alguna ayuda o se presentan errores en la plataforma, puedes contactarte hoy con soporte para resolver tus dudas </p><br><br>
+          <p class="card-text text-center">Si necesitas alguna ayuda o se presentan errores en la plataforma, puedes contactarte hoy con soporte técnico para resolver tus dudas </p><br><br>
         </div>
       </div>
     </div>
@@ -43,5 +43,40 @@
   <div class="row">
   </div>
 </div>
+<footer class="bg-dark text-light text-center py-4">
+  <div class="container">
+    <p>&copy; 2024 PROYECTO SIGAI. Todos los derechos reservados.</p>
+    <ul class="list-unstyled d-flex justify-content-center mb-4">
+      <li class="mx-3">
+        <img src="{{ url_for('static', filename ='img/SIGAI.png') }}" width="300" height="160"  class="mx-auto d-block">
+      </li>
+      <li class="mx-3">
+        <p class="text-light text-start fs-4">Accesos rapidos</p>
+        <p class="text-start"><a href="/" class="text-light ">Inicio</a></p>
+        <p class="text-start"><a href="/listado" class="text-light">Historico</a></p>
+        <p class="text-start"><a href="7register" class="text-light">Solicitud de comité</a></p>
+        <p class="text-start"><a href="7citacion" class="text-light">Citaciones</a></p>
+      </li>
+      <li class="mx-5">
+        <p class="text-light text-start fs-4">Contactos</p>
+        <p class="text-light text-start">Correo: sigaiadmin@gmail.com</p>
+        <p class="text-light text-start">Teléfono: 3135988954</p>
+        <p class="text-light text-start">Dirección: Antioquia, Apartadó Cr 98 #107 - 5</p>
+      </li>
+    </ul>
+    <div class="mt-3">
+      <a href="https://www.facebook.com" class="text-light mx-2">
+        <i class="fab fa-facebook"> Facebook </i>
+      </a>
+      <a href="https://www.twitter.com" class="text-light mx-2">
+        <i class="fab fa-twitter"> X </i>
+      </a>
+      <a href="https://www.instagram.com" class="text-light mx-2">
+        <i class="fab fa-instagram"> Instagram </i>
+      </a>
+    </div>
+  </div>
+</footer>
 <script src="{{ url_for('static', filename='js/welcome.js') }}"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 {% endblock %}
