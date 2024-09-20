@@ -54,4 +54,15 @@
           confirmButtonText:'Aceptar'
       });
   }
+  const urlParams5 = new URLSearchParams(window.location.search);
+  const showpassFail = urlParams.get('Show_passFail');
+ 
+  if (showpassFail) {
+      Swal.fire({
+          title: 'Error',
+          text: `Las contraseñas ingresadas no coinciden    `,
+          icon: 'error',
+          confirmButtonText:'Aceptar'
+      });
+  }
 

@@ -80,24 +80,25 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                       <div class="modal-body">
-                          <form action="/cambiar_contrasena/{{d.idlogin}}" method="post" enctype="multipart/form-data">
+                        <p>*La contraseña debe tener una logitud minima de 8 caracteres, debe estar compuesta por caracteres alfanúmericos y especiales</p>
+                          <form action="/cambiocontrasena/{{d.idlogin}}" method="post" enctype="multipart/form-data">
                             <div class="row mb-4">
                                 <div class="col">
                                   <label>Contraseña actual</label>
-                                  <input type="password" class="form-control mb-3" name="username">
+                                  <input type="password" class="form-control mb-3" minlength="8" name="passActual" required>
                                 </div>  
                             </div>
                             <div class="row mb-4">
                               <div class="col"> 
                                 <label>Nueva contraseña</label>
-                                <input type="password" class="form-control mb-3" name="nombres">
+                                <input type="password" class="form-control mb-3" minlength="8" name="passNew" pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$" title="La contraseña debe tener al menos 8 caracteres, incluyendo letras, números y un carácter especial" required>
                               </div>  
                             </div>
                             <div class="row md-2">
                                 <div class="col">
                                     <div class="col">
                                   <label>Confirma nueva contraseña</label>
-                                      <input type="password" class="form-control mb-3" name="correo">
+                                      <input type="password" class="form-control mb-3" minlength="8" pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$" title="La contraseña debe tener al menos 8 caracteres, incluyendo letras, números y un carácter especial" name="passComfirm">
                                     </div>
                                 </div>
                             </div>

@@ -31,61 +31,137 @@
                         <th scope="col">Documento</th>
                         <th scope="col">Ficha</th>
                         <th scope="col">Estado</th>
+                        <th scope="col">Detalles</th>
                         <th scope="col">Citar</th>
                     </thead>
                     <tbody>
                     {% for d in data %}
-                    <tr>
-                        <td class="articulo">{{d.idusuario}}</td>
-                        <td class="articulo">{{d.p_nombre}} {{d.s_nombre}} {{d.p_apellido}} {{d.s_apellido}}</td>
-                        <td class="articulo">{{d.documento}}</td>
-                        <td class="articulo">{{d.ficha}}</td>
-                        <td class="articulo">{{d.estado }}</td>
-                        <td class="articulo"><button type="button" class="btn btn-info btn-sm" id=btn-edit{{d.idusuario}} data-bs-toggle="modal" data-bs-target="#staticBackdrop{{d.idusuario}}">Citar</button></td>
-                    </tr>
+                      <tr>
+                          <td class="articulo">{{d.idusuario}}</td>
+                          <td class="articulo">{{d.p_nombre}} {{d.s_nombre}} {{d.p_apellido}} {{d.s_apellido}}</td>
+                          <td class="articulo">{{d.documento}}</td>
+                          <td class="articulo">{{d.ficha}}</td>
+                          <td class="articulo">{{d.estado }}</td>
+                          <td class="articulo"><button type="button" class="btn btn-info btn-sm" id=btn-detalles{{d.idusuario}} data-bs-toggle="modal" data-bs-target="#staticBackdrop1{{d.idusuario}}">Detalles</button></td>
+                          <td class="articulo"><button type="button" class="btn btn-info btn-sm" id=btn-edit{{d.idusuario}} data-bs-toggle="modal" data-bs-target="#staticBackdrop{{d.idusuario}}">Citar</button></td>
+                      </tr>
                   {% endfor %}
+                    </tbody>
+                </table>  
                     <!-- Modal -->
-                    {% for d in data %}
+                  {% for d in data %}
                     <div class="modal fade" id="staticBackdrop{{d.idusuario}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                          <div class="modal-content">
-                            <div class="modal-header">
-                              <h1 class="modal-title fs-5" id="staticBackdropLabel">{{d.p_nombre}} {{d.s_nombre}} {{d.p_apellido}} {{d.s_apellido}} # {{d.documento}} </h1>
-                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                              <form action="/citar/{{d.idusuario}}" method="post" enctype="multipart/form-data" >
-                                <label>Instructor solicitante</label> 
-                                <input type="text" class="form-control mb-3" name="instructor" value="{{d.instructor}}" disabled>
-                                <label>Gestor de grupo a cargo</label> 
-                                <input type="text" class="form-control mb-3" name="gestor" value="{{d.gestor}}" disabled>
-                                <label>Ficha</label>
-                                <input type="text" class="form-control mb-3" name="ficha" value="{{d.ficha}}" disabled>
-                                <label>Competencia</label>
-                                <input type="text" class="form-control mb-3" name="competencia" value="{{d.competencia}}" disabled>
-                                <label>Resultado</label>
-                                <input type="text" class="form-control mb-3" name="resultado" value="{{d.resultado}}" disabled>
-                                <label>Fecha de citación</label>
-                                <input type="date" id="fecha{{d.idusuario}}" class="form-control mb-3" name="fecha_cita" required>
-                                <label>Hora</label>
-                                <input type="time"  class="form-control mb-3" name="hora_cita"  required>
-                                <label>Lugar de citación</label>
-                                <input type="text" class="form-control mb-3" name="lugar_cita" required>
-                                <label>Asunto</label>
-                                <input type="text" class="form-control mb-3" name="asunto"  required>
-                                <label>Adjuntar citación</label>
-                                <input type="file" class="form-control" id="file"  name="file" required>
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="staticBackdropLabel">{{d.p_nombre}} {{d.s_nombre}} {{d.p_apellido}} {{d.s_apellido}} # {{d.documento}} </h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+                          <div class="modal-body">
+                            <form action="/citar/{{d.idusuario}}" method="post" enctype="multipart/form-data" >
+                              <label>Instructor solicitante</label> 
+                              <input type="text" class="form-control mb-3" name="instructor" value="{{d.instructor}}" disabled>
+                              <label>Gestor de grupo a cargo</label> 
+                              <input type="text" class="form-control mb-3" name="gestor" value="{{d.gestor}}" disabled>
+                              <label>Ficha</label>
+                              <input type="text" class="form-control mb-3" name="ficha" value="{{d.ficha}}" disabled>
+                              <label>Competencia</label>
+                              <input type="text" class="form-control mb-3" name="competencia" value="{{d.competencia}}" disabled>
+                              <label>Resultado</label>
+                              <input type="text" class="form-control mb-3" name="resultado" value="{{d.resultado}}" disabled>
+                              <label>Fecha de citación</label>
+                              <input type="date" id="fecha{{d.idusuario}}" class="form-control mb-3" name="fecha_cita" required>
+                              <label>Hora</label>
+                              <input type="time"  class="form-control mb-3" name="hora_cita"  required>
+                              <label>Lugar de citación</label>
+                              <input type="text" class="form-control mb-3" name="lugar_cita" required>
+                              <label>Asunto</label>
+                              <input type="text" class="form-control mb-3" name="asunto"  required>
+                              <label>Adjuntar citación</label>
+                              <input type="file" class="form-control" id="file"  name="file" required>
                             </div>
                             <div class="modal-footer">
                               <button type="submit" class="btn btn-secondary">Enviar</button>
                             </div>
-                        </form>                         
-                          </div>
+                            </form>                         
                         </div>
                       </div>
-                      {% endfor %} 
-                    </tbody>
-                </table>  
+                    </div>
+                  <div class="modal fade" id="staticBackdrop1{{d.idusuario}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                      <div class="modal-content">
+                        <div class="modal-header bg-info custom-color shadow-div" >
+                            <h1 class="modal-title fs-5 text-white" id="staticBackdropLabel">{{d.p_nombre}} {{d.s_nombre}} {{d.p_apellido}} {{d.s_apellido}} - {{d.documento}}</h1>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                          <div class="row">
+                            <div class="col"><div class="col"><label class="text-label bold-font">Tipo de documento: </label>{{d.nom_tipo_doc}} Cédula de ciudadania </div>
+                          </div>
+                          </div>
+                          <div class="row">
+                            <div class="col"><label class="text-label bold-font">Número de documento: </label>{{d.documento}} </div>
+                          </div>
+                          <div class="row">
+                            <div class="col"><label class="text-label bold-font">Ficha:</label>{{d.ficha}} - {{d.nom_ficha}} </div>
+                          </div>
+                          <div class="row">
+                            <div class="col"><label class="text-label bold-font">Competencia:</label> {{d.nom_competencia}}</div>
+                            <div class="col"><label class="text-label bold-font">Resultado:</label> {{d.nom_resultado}}</div>
+                            <div class="col"></div>
+                            <div class="col"></div>
+                          </div>
+                          <div class="row">
+                            <div class="col"><label class="text-label bold-font">Instructor:</label> {{d.nom_instructor}}</div>
+                            <div class="col"><label class="text-label bold-font">Gestor de grupo:</label> {{d.nom_gestor}}</div>
+                          </div>   
+                          <div class="row">
+                            <div class="col"><label class="text-label bold-font">Fecha de solicitud: </label> {{d.fecha_sol}} </div>
+                          </div>
+                          <div class="row md-2">
+                            <div class="col">
+                              <label class="text-label bold-font">Observación:</label>
+                              <input type="textarea" class="form-control mb-3" name="observacion" value="{{d.observacion}}">
+                            </div>
+                          </div>
+                          <div class="row md-2">
+                            <div class="col mb-2">
+                              <label class="text-label bold-font">Descargar formato de solicitud: </label>
+                              <a href="{{ url_for('download_file', user_id=d.idusuario) }}">{{d.filename }}</a>
+                            </div>
+                          </div>
+                          <br>
+                          <div class="row">
+                            <div class="col"><label class="text-label bold-font">Novedades presentadas:</label></div>
+                          </div>
+                          <div class="row">
+                            <table class="table table-striped table-bordered" id="tbl_usuario"  cellspacing="0">
+                              <thead>
+                                  <th scope="col">#</th>
+                                  <th scope="col">Fecha</th>
+                                  <th scope="col">Ver</th>
+                              </thead>
+                              <tbody>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                          <div class="row md-4">
+                            <div class="col">
+                              <label class="text-label bold-font">Estado actual de la solicitud: </label>
+                              <input type="text" class="form-control text-center" value="{{d.estado}}" name="estado" disabled>
+                            </div>
+                          </div>
+                        </div>  
+                      </div>
+                    </div>
+                  </div>
+                  {% endfor %} 
+
             </div>
         </div>
     </div>

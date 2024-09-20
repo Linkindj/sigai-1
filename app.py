@@ -360,15 +360,21 @@ def edit_cuenta(idlogin):
 
 @app.route('/cambiocontrasena/<string:idlogin>', methods=['POST'])
 def cambiocontrasena(idlogin):
-    username= request.form['username']
-    nombres= request.form['nombres']
-    correo= request.form['correo']
-    if username in session:
-        cursor = db.database.cursor()
-        sql="UPDATE login SET username=%s, fullname=%s, correo=%s WHERE idlogin=%s"
-        data=(username, nombres, correo, idlogin)
-        cursor.execute(sql, data)
-        db.database.commit()
+    passActual= request.form['passActual']
+    passNew= request.form['passNew']
+    passComfirm= request.form['passComfirm']
+    if 'username' in session:
+        if passNew==passComfirm:
+            cursor = db.database.cursor()
+            sql="UPDATE login SET password=%s  WHERE password=%s and idlogin=%s"
+            data=(passNew, passActual, idlogin)
+            cursor.execute(sql, data)
+            db.database.commit()
+            return redirect(url_for('cuenta', Show_Edit=True))
+        else: 
+            flash("Las contraseñas no coinciden", "error")
+            return redirect(url_for('cuenta', Show_passFail=True))
+        
     return redirect(url_for('cuenta'))
 
 #Generar Informe
@@ -616,6 +622,7 @@ def editar_cita(idcitacion):
         cursor.execute(sql, data)
         db.database.commit()
     return redirect(url_for('cronograma'))
+
 
 @app.route('/descargo', methods=['GET'])
 def descargo():
